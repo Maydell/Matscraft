@@ -1,4 +1,4 @@
-package com.matscraft.world;
+package world;
 
 import static org.lwjgl.opengl.GL11.*;
 

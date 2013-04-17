@@ -1,6 +1,4 @@
 
-package com.matscraft;
-
 import java.nio.FloatBuffer;
 
 import org.lwjgl.BufferUtils;
@@ -10,7 +8,7 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 
-import com.matscraft.world.World;
+import world.World;
 
 import static org.lwjgl.opengl.GL11.*;
 
