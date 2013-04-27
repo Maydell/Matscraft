@@ -1,8 +1,8 @@
 package world;
 
-import static org.lwjgl.opengl.GL11.*;
-
-import java.util.Arrays;
+import static org.lwjgl.opengl.GL11.glPopMatrix;
+import static org.lwjgl.opengl.GL11.glPushMatrix;
+import static org.lwjgl.opengl.GL11.glTranslatef;
 
 
 public class World extends Drawable {
@@ -16,8 +16,8 @@ public class World extends Drawable {
 				chunk[x][0][z] = null; //initiate to null, and only draw real chunks.
 			}
 		}
-		for (int x = 0; x < 4; x++) {
-			for (int z = 0; z < 3; z++) {
+		for (int x = 0; x < 10; x++) {
+			for (int z = 0; z < 5; z++) {
 				chunk[x][0][z] = new Chunk();
 			}
 		}

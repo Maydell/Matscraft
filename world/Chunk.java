@@ -1,7 +1,22 @@
 package world;
 
+import static org.lwjgl.opengl.GL11.GL_COLOR_ARRAY;
+import static org.lwjgl.opengl.GL11.GL_FILL;
+import static org.lwjgl.opengl.GL11.GL_FRONT_AND_BACK;
+import static org.lwjgl.opengl.GL11.GL_LINE;
+import static org.lwjgl.opengl.GL11.GL_NORMAL_ARRAY;
+import static org.lwjgl.opengl.GL11.GL_QUADS;
+import static org.lwjgl.opengl.GL11.GL_VERTEX_ARRAY;
+import static org.lwjgl.opengl.GL11.glColorPointer;
+import static org.lwjgl.opengl.GL11.glDisableClientState;
+import static org.lwjgl.opengl.GL11.glDrawArrays;
+import static org.lwjgl.opengl.GL11.glEnableClientState;
+import static org.lwjgl.opengl.GL11.glNormalPointer;
+import static org.lwjgl.opengl.GL11.glPolygonMode;
 import static org.lwjgl.opengl.GL11.glPopMatrix;
-import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL11.glPushMatrix;
+import static org.lwjgl.opengl.GL11.glTranslatef;
+import static org.lwjgl.opengl.GL11.glVertexPointer;
 
 import java.nio.FloatBuffer;
 import java.util.Arrays;
@@ -20,7 +35,8 @@ public class Chunk extends Drawable {
 
 	public void generate() {
 		// temporary
-		int level = 3 + (int) (Math.random() * (SIZE - 3));
+//		int level = 3 + (int) (Math.random() * (SIZE - 3));
+		int level = SIZE;
 		for (int x = 0; x < SIZE; x++) {
 			for (int y = 0; y < level; y++) {
 				for (int z = 0; z < SIZE; z++) {
@@ -54,32 +70,46 @@ public class Chunk extends Drawable {
 				* numVertsPerSide * numSidesPerCube * numCubesEnabled);
 		nBuffer = BufferUtils.createFloatBuffer(numValsPerVert
 				* numVertsPerSide * numSidesPerCube * numCubesEnabled);
-
+		
 		int counter = 0;
 		for (int x = 0; x < SIZE; x++) {
 			for (int y = 0; y < SIZE; y++) {
 				for (int z = 0; z < SIZE; z++) {
 					if (cubes[x][y][z] != null && cubes[x][y][z].show == true) {
 
-						counter++;
+						// bottom, top, right, left, close, far
+						boolean[] sidesToRender = {
+						((y == 0) || (cubes[x][y - 1][z] == null) || !(cubes[x][y - 1][z].show)),
+						((y == SIZE - 1) || (cubes[x][y + 1][z] == null) || !(cubes[x][y + 1][z].show)),
+						((x == SIZE - 1) || (cubes[x + 1][y][z] == null) || !(cubes[x + 1][y][z].show)),
+						((x == 0) || (cubes[x - 1][y][z] == null) || !(cubes[x - 1][y][z].show)),
+						((z == SIZE - 1) || (cubes[x][y][z + 1] == null) || !(cubes[x][y][z + 1].show)),
+						((z == 0) || (cubes[x][y][z - 1] == null) || !(cubes[x][y][z - 1].show))};
 						
 						for (int i = 0; i < numVertsPerSide * numSidesPerCube; i++) {
-							cBuffer.put(cubes[x][y][z].color);
+							if (sidesToRender[i/4]) {
+								cBuffer.put(cubes[x][y][z].color);
+							}
 						}
 						// cBuffer.flip();
 
 						for (int i = 0; i < numVertsPerSide * numSidesPerCube; i++) {
-							// vBuffer.put(Cube.vertices[i]);
-							vBuffer.put(Cube.vertices[i][0] + x)
-									.put(Cube.vertices[i][1] + y)
-									.put(Cube.vertices[i][2] + z);
+//							 vBuffer.put(Cube.vertices[i]);
+							if (sidesToRender[i/4]) {
+								vBuffer.put(Cube.vertices[i][0] + x);
+								vBuffer.put(Cube.vertices[i][1] + y);
+								vBuffer.put(Cube.vertices[i][2] + z);
+								counter++;
+							}
 						}
 						// vBuffer.flip();
 
 						for (int i = 0; i < numVertsPerSide * numSidesPerCube; i++) {
-							nBuffer.put(Cube.normals[i][0])
-									.put(Cube.normals[i][1])
-									.put(Cube.normals[i][2]);
+							if (sidesToRender[i/4]) {
+								nBuffer.put(Cube.normals[i][0]);
+								nBuffer.put(Cube.normals[i][1]);
+								nBuffer.put(Cube.normals[i][2]);
+							}
 						}
 						// nBuffer.flip();
 
@@ -87,6 +117,9 @@ public class Chunk extends Drawable {
 				}
 			}
 		}
+		cBuffer.limit(counter);
+		vBuffer.limit(counter);
+		nBuffer.limit(counter);
 		cBuffer.flip();
 		vBuffer.flip();
 		nBuffer.flip();
