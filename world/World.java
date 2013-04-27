@@ -16,9 +16,11 @@ public class World extends Drawable {
 				chunk[x][0][z] = null; //initiate to null, and only draw real chunks.
 			}
 		}
-		chunk[0][0][0] = new Chunk();
-		chunk[1][0][0] = new Chunk();
-		chunk[2][0][0] = new Chunk();
+		for (int x = 0; x < 4; x++) {
+			for (int z = 0; z < 3; z++) {
+				chunk[x][0][z] = new Chunk();
+			}
+		}
 	}
 	
 	public void generateChunk(int x, int z){
@@ -35,12 +37,12 @@ public class World extends Drawable {
 //		glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
 		
 		for (int x = 0; x < chunk.length; x++) {
-			for (int y = 0; y < chunk[0].length; y++) {
-				if(chunk[x][y][0] != null){
+			for (int z = 0; z < chunk[0][0].length; z++) {
+				if(chunk[x][0][z] != null){
 					glPushMatrix();
-					glTranslatef(x*Chunk.SIZE*Cube.SIZE, 0, y*Chunk.SIZE*Cube.SIZE);
-//					chunk[x][y][0].draw();
-					chunk[x][y][0].drawVertexArray();
+					glTranslatef(x*Chunk.SIZE*Cube.SIZE, 0, z*Chunk.SIZE*Cube.SIZE);
+//					chunk[x][0][z].draw();
+					chunk[x][0][z].drawVertexArray();
 					glPopMatrix();
 				}
 			}

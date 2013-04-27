@@ -11,7 +11,7 @@ public class Cube extends Drawable {
 	
 	float[] color = { 1.0f, 0.5f, 0.0f }; //change to material later
 	
-	public static float[][] vertices = {
+	public static float[][] vertices = { //72 st
 		//bottom
 		{-HALF_CUBE, -HALF_CUBE, -HALF_CUBE},
 		{-HALF_CUBE, -HALF_CUBE,  HALF_CUBE},
