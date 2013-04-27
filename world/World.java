@@ -10,14 +10,14 @@ public class World extends Drawable {
 	
 	/** Create a new world, currently of static size, for debugging and testing purposes. */
 	public World(){
-		chunk = new Chunk[10][1][5]; //determines the biggest world size to 10*128 by 5*128
+		chunk = new Chunk[16][1][16]; //determines the biggest world size to 10*128 by 5*128
 		for (int x = 0; x < chunk.length; x++) {
 			for (int z = 0; z < chunk[0][0].length; z++) {
 				chunk[x][0][z] = null; //initiate to null, and only draw real chunks.
 			}
 		}
-		for (int x = 0; x < 10; x++) {
-			for (int z = 0; z < 5; z++) {
+		for (int x = 0; x < 16; x++) {
+			for (int z = 0; z < 16; z++) {
 				chunk[x][0][z] = new Chunk();
 			}
 		}

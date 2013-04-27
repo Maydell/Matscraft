@@ -37,13 +37,15 @@ public class Camera {
 		//glLight(GL_LIGHT0, GL_POSITION, (FloatBuffer) BufferUtils.createFloatBuffer(4).put(-20f).put(40f).put(-20f).put(1).flip());
 		
 		/////////////////////
-		//float[] lp = {10f,5f,0f,1f};
-		//glLight(GL_LIGHT0, GL_POSITION, (FloatBuffer) BufferUtils.createFloatBuffer(4).put(lp[0]).put(lp[1]).put(lp[2]).put(lp[3]).flip());
-		glLightf(GL_LIGHT0, GL_QUADRATIC_ATTENUATION, 0.1f);
-		glLightf(GL_LIGHT0, GL_CONSTANT_ATTENUATION, 1.5f);
+		float[] light = {.8f, .8f, .8f, 1f};
+		glLight(GL_LIGHT0, GL_DIFFUSE, (FloatBuffer) BufferUtils.createFloatBuffer(4).put(light).flip());
+		glLight(GL_LIGHT0, GL_SPECULAR, (FloatBuffer) BufferUtils.createFloatBuffer(4).put(light).flip());
+//		glLightf(GL_LIGHT0, GL_QUADRATIC_ATTENUATION, 0.1f);
+//		glLightf(GL_LIGHT0, GL_CONSTANT_ATTENUATION, 1.5f);
 		/////////////////////
 		
 		glEnable(GL_COLOR_MATERIAL);
+		glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
 	}
 	
 	/**

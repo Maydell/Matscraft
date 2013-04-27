@@ -41,6 +41,8 @@ public class Matscraft {
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			glLoadIdentity();
 			cam.useView();
+			float[] lp = {2f,10f,0f,1f};
+			glLight(GL_LIGHT0, GL_POSITION, (FloatBuffer) BufferUtils.createFloatBuffer(4).put(lp).flip());
 			glPushMatrix();
 			{
 				glBegin(GL_QUADS);
@@ -56,11 +58,11 @@ public class Matscraft {
 			glPopMatrix();
 			
 			////////////////////
-			float[] lp = {50f,5f,0f,1f};
+//			float[] lp = {50f,5f,0f,1f};
 			//glLight(GL_LIGHT0, GL_POSITION, (FloatBuffer) BufferUtils.createFloatBuffer(4).put(lp[0]).put(lp[1]).put(lp[2]).put(lp[3]).flip());
 			
 			//nu kommer ljuset ifrån där vi står:
-			glLight(GL_LIGHT0, GL_POSITION, (FloatBuffer) BufferUtils.createFloatBuffer(4).put(cam.getX()).put(cam.getY()).put(cam.getZ()).put(lp[3]).flip());
+			// glLight(GL_LIGHT0, GL_POSITION, (FloatBuffer) BufferUtils.createFloatBuffer(4).put(cam.getX()).put(cam.getY()).put(cam.getZ()).put(lp[3]).flip());
 			
 			////////////////////
 			glPushMatrix();
