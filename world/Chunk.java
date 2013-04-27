@@ -16,7 +16,7 @@ import static org.lwjgl.opengl.GL11.glPolygonMode;
 import static org.lwjgl.opengl.GL11.glPopMatrix;
 import static org.lwjgl.opengl.GL11.glPushMatrix;
 import static org.lwjgl.opengl.GL11.glTranslatef;
-import static org.lwjgl.opengl.GL11.glVertexPointer;
+import static org.lwjgl.opengl.GL11.*;
 
 import java.nio.FloatBuffer;
 import java.util.Arrays;
@@ -42,7 +42,7 @@ public class Chunk extends Drawable {
 				for (int z = 0; z < SIZE; z++) {
 					cubes[x][y][z] = new Cube();
 					if (y == level - 1 || true) {
-						cubes[x][y][z].show = true;
+						cubes[x][y][z].show = (Math.random() > 0.5);
 						numCubesEnabled++;
 					}
 				}
@@ -134,7 +134,7 @@ public class Chunk extends Drawable {
 		glEnableClientState(GL_COLOR_ARRAY);
 		glEnableClientState(GL_NORMAL_ARRAY);
 		
-//		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		glPolygonMode(GL_FRONT, GL_FILL);
 
 		glNormalPointer(3 << 2, nBuffer);
 		glColorPointer(3, /* stride */3 << 2, cBuffer);

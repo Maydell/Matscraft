@@ -41,13 +41,14 @@ public class Matscraft {
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			glLoadIdentity();
 			cam.useView();
-			float[] lp = {2f,10f,0f,1f};
+			float[] lp = {2f, 50f, 0f, 0f};
 			glLight(GL_LIGHT0, GL_POSITION, (FloatBuffer) BufferUtils.createFloatBuffer(4).put(lp).flip());
 			glPushMatrix();
 			{
 				glBegin(GL_QUADS);
 				{
 					glColor3f(1f, 1f, 1f);
+					glNormal3f(0f, 1f, 0f);
 					glVertex3f(50, -1f, 50);
 					glVertex3f(50, -1f, -50);
 					glVertex3f(-50, -1f, -50);
@@ -57,18 +58,7 @@ public class Matscraft {
 			}
 			glPopMatrix();
 			
-			////////////////////
-//			float[] lp = {50f,5f,0f,1f};
-			//glLight(GL_LIGHT0, GL_POSITION, (FloatBuffer) BufferUtils.createFloatBuffer(4).put(lp[0]).put(lp[1]).put(lp[2]).put(lp[3]).flip());
-			
-			//nu kommer ljuset ifrån där vi står:
-			// glLight(GL_LIGHT0, GL_POSITION, (FloatBuffer) BufferUtils.createFloatBuffer(4).put(cam.getX()).put(cam.getY()).put(cam.getZ()).put(lp[3]).flip());
-			
-			////////////////////
 			glPushMatrix();
-			//glTranslatef(1, 1, 1);
-			//glRotatef(currentTime*0.00000001f, 0, 1, 0); //rotating test for normals
-			////////////////////
 			
 			world.draw();
 			glPopMatrix();
@@ -80,7 +70,7 @@ public class Matscraft {
 	
 	private void tick(long passedTime) {
 		// Amount to move or rotate
-		float movement = 5f * passedTime / 1000000000;
+		float movement = 10f * passedTime / 1000000000;
 		if (Keyboard.isKeyDown(Keyboard.KEY_W) || Keyboard.isKeyDown(Keyboard.KEY_UP)) {
 			cam.move(movement, 1);
 		}
