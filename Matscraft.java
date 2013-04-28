@@ -60,6 +60,7 @@ public class Matscraft {
 			cam.useView();
 			float[] lp = {2f, 4f, 2f, 0f};
 			glLight(GL_LIGHT0, GL_POSITION, (FloatBuffer) BufferUtils.createFloatBuffer(4).put(lp).flip());
+			/*
 			glPushMatrix();
 			{
 				glBegin(GL_QUADS);
@@ -74,6 +75,7 @@ public class Matscraft {
 				glEnd();
 			}
 			glPopMatrix();
+			*/
 			
 			glPushMatrix();
 			

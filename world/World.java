@@ -12,7 +12,7 @@ public class World extends Drawable {
 	
 	/** Create a new world, currently of static size, for debugging and testing purposes. */
 	public World(){
-		chunk = new Chunk[16][1][16]; //determines the biggest world size to 10*128 by 5*128
+		chunk = new Chunk[32][1][32]; //determines the biggest world size to 10*128 by 5*128
 		Random r = new Random();
 		int[][] heightmap = new int[chunk.length * Chunk.SIZE][chunk[0][0].length * Chunk.SIZE];
 		for (int i = 0; i < heightmap.length; i++) {
@@ -51,8 +51,8 @@ public class World extends Drawable {
 				chunk[x][0][z] = null; //initiate to null, and only draw real chunks.
 			}
 		}
-		for (int x = 0; x < 16; x++) {
-			for (int z = 0; z < 16; z++) {
+		for (int x = 0; x < 32; x++) {
+			for (int z = 0; z < 32; z++) {
 				chunk[x][0][z] = new Chunk(heightmap, x * Chunk.SIZE, z * Chunk.SIZE);
 			}
 		}
