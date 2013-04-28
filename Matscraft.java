@@ -1,4 +1,20 @@
 
+import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11.GL_LIGHT0;
+import static org.lwjgl.opengl.GL11.GL_POSITION;
+import static org.lwjgl.opengl.GL11.GL_QUADS;
+import static org.lwjgl.opengl.GL11.glBegin;
+import static org.lwjgl.opengl.GL11.glClear;
+import static org.lwjgl.opengl.GL11.glColor3f;
+import static org.lwjgl.opengl.GL11.glEnd;
+import static org.lwjgl.opengl.GL11.glLight;
+import static org.lwjgl.opengl.GL11.glLoadIdentity;
+import static org.lwjgl.opengl.GL11.glNormal3f;
+import static org.lwjgl.opengl.GL11.glPopMatrix;
+import static org.lwjgl.opengl.GL11.glPushMatrix;
+import static org.lwjgl.opengl.GL11.glVertex3f;
+
 import java.nio.FloatBuffer;
 
 import org.lwjgl.BufferUtils;
@@ -8,13 +24,13 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 
+import world.Sun;
 import world.World;
-
-import static org.lwjgl.opengl.GL11.*;
 
 public class Matscraft {
 	World world;
 	Camera cam;
+	Sun sun;
 	public Matscraft(){
 		
 		world = new World();
@@ -28,6 +44,7 @@ public class Matscraft {
 		}
 		
 		cam = new Camera(70f, (float) Display.getWidth() / (float) Display.getHeight(), 0.3f, 1000f);
+		sun = new Sun(2f, 2f, 2f);
 		
 		long lastTime = System.nanoTime();
 		
@@ -41,7 +58,7 @@ public class Matscraft {
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			glLoadIdentity();
 			cam.useView();
-			float[] lp = {2f, 50f, 0f, 0f};
+			float[] lp = {2f, 4f, 2f, 0f};
 			glLight(GL_LIGHT0, GL_POSITION, (FloatBuffer) BufferUtils.createFloatBuffer(4).put(lp).flip());
 			glPushMatrix();
 			{
@@ -88,14 +105,27 @@ public class Matscraft {
 		}
 		
 		if (Keyboard.isKeyDown(Keyboard.KEY_D) || Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
-			cam.setRy(cam.getRy() + 50 * movement);
+//			cam.setRy(cam.getRy() + 50 * movement);
+			cam.move(movement, 0);
 		}
 		
 		if (Keyboard.isKeyDown(Keyboard.KEY_A) || Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
-			cam.setRy(cam.getRy() - 50 * movement);
+//			cam.setRy(cam.getRy() - 50 * movement);
+			cam.move(-movement, 0);
 		}
 		
-		cam.setY(cam.getY() + Mouse.getDWheel()/100);
+		if (Mouse.isButtonDown(1)) {
+			cam.setRy(cam.getRy() + (int) (Mouse.getDX() * .6));
+			cam.setRx(cam.getRx() - (int) (Mouse.getDY() * .6));
+		}
+		
+		if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
+			cam.setY(cam.getY() + movement);
+		}
+		
+		if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+			cam.setY(cam.getY() - movement);
+		}
 	}
 
 	public static void main(String[] args) {

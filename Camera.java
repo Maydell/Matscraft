@@ -1,9 +1,6 @@
+import static org.lwjgl.opengl.GL11.GL_AMBIENT_AND_DIFFUSE;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.util.glu.GLU.gluPerspective;
-
-import java.nio.FloatBuffer;
-
-import org.lwjgl.BufferUtils;
 
 public class Camera {
 
@@ -33,14 +30,6 @@ public class Camera {
 		glShadeModel(GL_SMOOTH);
 		glEnable(GL_DEPTH_TEST);
 		glEnable(GL_LIGHTING);
-		glEnable(GL_LIGHT0);
-		
-		float[] light = {.8f, .8f, .8f, 1f};
-		glLight(GL_LIGHT0, GL_DIFFUSE, (FloatBuffer) BufferUtils.createFloatBuffer(4).put(light).flip());
-		glLight(GL_LIGHT0, GL_SPECULAR, (FloatBuffer) BufferUtils.createFloatBuffer(4).put(light).flip());
-//		glLightf(GL_LIGHT0, GL_QUADRATIC_ATTENUATION, 0.1f);
-//		glLightf(GL_LIGHT0, GL_CONSTANT_ATTENUATION, 1.5f);
-		glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
 		
 		glEnable(GL_COLOR_MATERIAL);
 		glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);

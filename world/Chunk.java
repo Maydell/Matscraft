@@ -1,25 +1,8 @@
 package world;
 
-import static org.lwjgl.opengl.GL11.GL_COLOR_ARRAY;
-import static org.lwjgl.opengl.GL11.GL_FILL;
-import static org.lwjgl.opengl.GL11.GL_FRONT_AND_BACK;
-import static org.lwjgl.opengl.GL11.GL_LINE;
-import static org.lwjgl.opengl.GL11.GL_NORMAL_ARRAY;
-import static org.lwjgl.opengl.GL11.GL_QUADS;
-import static org.lwjgl.opengl.GL11.GL_VERTEX_ARRAY;
-import static org.lwjgl.opengl.GL11.glColorPointer;
-import static org.lwjgl.opengl.GL11.glDisableClientState;
-import static org.lwjgl.opengl.GL11.glDrawArrays;
-import static org.lwjgl.opengl.GL11.glEnableClientState;
-import static org.lwjgl.opengl.GL11.glNormalPointer;
-import static org.lwjgl.opengl.GL11.glPolygonMode;
-import static org.lwjgl.opengl.GL11.glPopMatrix;
-import static org.lwjgl.opengl.GL11.glPushMatrix;
-import static org.lwjgl.opengl.GL11.glTranslatef;
 import static org.lwjgl.opengl.GL11.*;
 
 import java.nio.FloatBuffer;
-import java.util.Arrays;
 
 import org.lwjgl.BufferUtils;
 
@@ -28,23 +11,19 @@ public class Chunk extends Drawable {
 	Cube[][][] cubes = new Cube[SIZE][SIZE][SIZE];
 	public int numCubesEnabled = 0;
 
-	public Chunk() {
-		generate();
+	public Chunk(int[][] heightmap, int xOffset, int zOffset) {
+		generate(heightmap, xOffset, zOffset);
 		generateVertexArray();
 	}
 
-	public void generate() {
+	public void generate(int[][] heightmap, int xOffset, int zOffset) {
 		// temporary
-//		int level = 3 + (int) (Math.random() * (SIZE - 3));
-		int level = SIZE;
 		for (int x = 0; x < SIZE; x++) {
-			for (int y = 0; y < level; y++) {
-				for (int z = 0; z < SIZE; z++) {
+			for (int z = 0; z < SIZE; z++) {
+				for (int y = 0; y < heightmap[xOffset + x][zOffset + z]; y++) {
 					cubes[x][y][z] = new Cube();
-					if (y == level - 1 || true) {
-						cubes[x][y][z].show = (Math.random() > 0.5);
-						numCubesEnabled++;
-					}
+					cubes[x][y][z].show = true;
+					numCubesEnabled++;
 				}
 			}
 		}
@@ -124,8 +103,8 @@ public class Chunk extends Drawable {
 		vBuffer.flip();
 		nBuffer.flip();
 		
-		System.out.println("Counter: "+counter+", numEnabled: "+numCubesEnabled+", SIZE: "+SIZE);
-		System.out.println("Arrays: "+numValsPerVert * numVertsPerSide * numSidesPerCube * numCubesEnabled);
+//		System.out.println("Counter: "+counter+", numEnabled: "+numCubesEnabled+", SIZE: "+SIZE);
+//		System.out.println("Arrays: "+numValsPerVert * numVertsPerSide * numSidesPerCube * numCubesEnabled);
 		
 	}
 
@@ -175,7 +154,7 @@ public class Chunk extends Drawable {
 	 * cubes that is NOT surrounded, not the most efficient, but better and easy
 	 * to test.)
 	 */
-	private boolean surrounded(int x, int y, int z) {
+	/*private boolean surrounded(int x, int y, int z) {
 		boolean[] b = new boolean[6]; // one boolean for each side of the cube
 		Arrays.fill(b, false); // false like in "nothing there"
 		if (0 < x && cubes[x - 1][y][z] != null)
@@ -194,5 +173,5 @@ public class Chunk extends Drawable {
 			b[5] = true;
 
 		return b[0] && b[1] && b[2] && b[3] && b[4] && b[5];
-	}
+	}*/
 }
