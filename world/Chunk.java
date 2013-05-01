@@ -10,6 +10,11 @@ public class Chunk extends Drawable {
 	public static final int SIZE = 8;// 16;//128;
 	Cube[][][] cubes = new Cube[SIZE][SIZE][SIZE];
 	public int numCubesEnabled = 0;
+	
+	public int numVertsInArray = 0; //in Vertex Buffer Array (vBuffer/cBuffer/nBuffer)
+	FloatBuffer cBuffer; // colors
+	FloatBuffer vBuffer; // vertices
+	FloatBuffer nBuffer; // normals
 
 	public Chunk(int[][] heightmap, int xOffset, int zOffset) {
 		generate(heightmap, xOffset, zOffset);
@@ -29,9 +34,7 @@ public class Chunk extends Drawable {
 		}
 	}
 
-	FloatBuffer cBuffer; // colors
-	FloatBuffer vBuffer; // vertices
-	FloatBuffer nBuffer; // normals
+	
 
 	void generateVertexArray() {
 		
@@ -50,7 +53,7 @@ public class Chunk extends Drawable {
 		nBuffer = BufferUtils.createFloatBuffer(numValsPerVert
 				* numVertsPerSide * numSidesPerCube * numCubesEnabled);
 		
-		int counter = 0;
+		numVertsInArray = 0;
 		for (int x = 0; x < SIZE; x++) {
 			for (int y = 0; y < SIZE; y++) {
 				for (int z = 0; z < SIZE; z++) {
@@ -70,18 +73,15 @@ public class Chunk extends Drawable {
 								cBuffer.put(cubes[x][y][z].color);
 							}
 						}
-						// cBuffer.flip();
 
 						for (int i = 0; i < numVertsPerSide * numSidesPerCube; i++) {
-//							 vBuffer.put(Cube.vertices[i]);
 							if (sidesToRender[i/4]) {
 								vBuffer.put(Cube.vertices[i][0] + x);
 								vBuffer.put(Cube.vertices[i][1] + y);
 								vBuffer.put(Cube.vertices[i][2] + z);
-								counter++;
+								numVertsInArray++;
 							}
 						}
-						// vBuffer.flip();
 
 						for (int i = 0; i < numVertsPerSide * numSidesPerCube; i++) {
 							if (sidesToRender[i/4]) {
@@ -90,15 +90,14 @@ public class Chunk extends Drawable {
 								nBuffer.put(Cube.normals[i][2]);
 							}
 						}
-						// nBuffer.flip();
 
 					}
 				}
 			}
 		}
-		cBuffer.limit(counter);
-		vBuffer.limit(counter);
-		nBuffer.limit(counter);
+		cBuffer.limit(numVertsInArray);
+		vBuffer.limit(numVertsInArray);
+		nBuffer.limit(numVertsInArray);
 		cBuffer.flip();
 		vBuffer.flip();
 		nBuffer.flip();
@@ -118,7 +117,7 @@ public class Chunk extends Drawable {
 		glNormalPointer(3 << 2, nBuffer);
 		glColorPointer(3, /* stride */3 << 2, cBuffer);
 		glVertexPointer(3, /* stride */3 << 2, vBuffer);
-		glDrawArrays(GL_QUADS, 0, /* elements */numCubesEnabled * 24); // numVerts
+		glDrawArrays(GL_QUADS, 0, /* elements */numVertsInArray);//numCubesEnabled * 24); // numVerts
 
 		glDisableClientState(GL_NORMAL_ARRAY);
 		glDisableClientState(GL_COLOR_ARRAY);
